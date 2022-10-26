@@ -2,6 +2,8 @@ import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
+import './database'
+import recetasRouter from './routes/recetas.routes'
 
 const app = express()
 
@@ -20,6 +22,4 @@ app.use(express.static(path.join(__dirname, '../public')))
 
 // RUTAS:
 // http://localhost:4000/
-app.get('/recetas', (req, res)=>{
-    res.send('Esto es una prueba de la peticion GET recetas')
-})
+app.use('/apirecetas', recetasRouter)
