@@ -1,4 +1,5 @@
 import Receta from "../models/receta";
+import { validationResult } from "express-validator";
 
 export const listarRecetas = async (req, res) => {
   try {
@@ -14,6 +15,12 @@ export const listarRecetas = async (req, res) => {
 
 export const crearReceta = async (req, res) => {
   try {
+    const errores = validationResult(req);
+    if(!errores.isEmpty()){
+      return res.status(400).json({
+        errores: errores.array()
+      })
+    }
     const nuevaReceta = new Receta(req.body);
     await nuevaReceta.save();
     res.status(201).json({
@@ -41,6 +48,12 @@ export const obtenerReceta = async(req,res)=>{
 
 export const editarReceta = async(req,res) =>{
   try {
+    const errores = validationResult(req);
+    if(!errores.isEmpty()){
+      return res.status(400).json({
+        errores: errores.array()
+      })
+    }
     await Receta.findByIdAndUpdate(req.params.id, req.body)
     res.status(200).json({
       mensaje: "La receta fue editada correctamente"
